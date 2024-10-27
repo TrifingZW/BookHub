@@ -12,7 +12,7 @@ BookHub 是一个使用 C++ 编写的图书跳蚤市场演示项目（无实际�
 
 1. **克隆项目**  
    ```bash
-   git clone https://github.com/yourusername/BookHub.git
+   git clone https://github.com/TrifingZW/BookHub.git
    cd BookHub
    ```
 
