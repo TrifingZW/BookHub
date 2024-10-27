@@ -38,4 +38,4 @@ BookHub 是一个使用 C++ 编写的图书跳蚤市场演示项目（无实际�
 
 ## 许可证
 
-本项目采用 MIT 许可证，详细信息请查看 [LICENSE](LICENSE) 文件。
+本项目采用 MIT 许可证，详细信息请查看 [LICENSE](LICENSE.txt) 文件。
