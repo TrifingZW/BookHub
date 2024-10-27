@@ -109,7 +109,6 @@ public:
         ImGui::SeparatorText(name.c_str());
         ImGui::PopFont();
         ex_display_info();
-        ImGui::Text("版号: %s", isbn.c_str());
         ImGui::Text("作者: %s", author.c_str());
         ImGui::Text("ISBN: %s", isbn.c_str());
         ImGui::TextColored(red_color, "价格: ￥%.2f", price);
