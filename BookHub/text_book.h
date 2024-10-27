@@ -43,11 +43,11 @@ public:
 
     [[nodiscard]] nlohmann::json to_json() const override
     {
-        return {
-            {"course", course},
-            {"grade", grade},
-            {"semester", semester}
-        };
+        nlohmann::json json = book::to_json();
+        json.push_back({"course", course});
+        json.push_back({"grade", grade});
+        json.push_back({"semester", semester});
+        return json;
     }
 
     static text_book from_json(const nlohmann::json& j)

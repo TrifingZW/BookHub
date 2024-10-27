@@ -39,10 +39,10 @@ public:
 
     [[nodiscard]] nlohmann::json to_json() const override
     {
-        return {
-            {"publishing_house", publishing_house},
-            {"publication_date", publication_date}
-        };
+        nlohmann::json json = book::to_json();
+        json.push_back({"publishing_house", publishing_house});
+        json.push_back({"publication_date", publication_date});
+        return json;
     }
 
     static novel from_json(const nlohmann::json& j)
