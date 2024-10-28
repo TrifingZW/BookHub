@@ -1,0 +1,7 @@
+﻿<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+  </Configurations>
+  <Project Path="BookHub\BookHub.vcxproj" />
+  <Project Path="imgui\imgui.vcxproj" />
+</Solution>
