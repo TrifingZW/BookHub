@@ -82,16 +82,33 @@ void user::show_orders_popup()
     if (ImGui::BeginPopupModal("OrdersModalPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
     {
         ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f));
-        ImGui::BeginChild("OrderList", ImVec2(600, 400), false);
+        ImGui::BeginChild("OrderList", ImVec2(600, 500), false);
         ImGui::PopStyleColor();
-        for (int i = 0; i < static_cast<int>(orders.size()); ++i)
+
+        for (int i1 = 0; i1 < static_cast<int>(orders.size()); i1++)
         {
-            ImGui::PushID(i);
-            const auto order1 = orders[i];
-            ImGui::BeginChild("Order", ImVec2(0, 150), true);
-            ImGui::TextColored(blue_color, "%s", order1->book1->name.c_str());
-            ImGui::TextColored(red_color, "%s", order1->date.c_str());
-            ImGui::TextColored(red_color, "价格: ￥%.2f", order1->book1->price);
+            ImGui::PushID(i1);
+            const auto order1 = orders[i1];
+            const auto books = order1->books;
+            ImGui::BeginChild("Order", ImVec2(0, 200), true);
+
+            for (int i2 = 0; i2 < static_cast<int>(books.size()); i2++)
+            {
+                const auto& book = books[i2];
+                ImGui::PushID(i2);
+                ImGui::TextColored(red_color, "%s", book->name.c_str());
+                ImGui::SameLine();
+                ImGui::TextColored(red_color, "单品价格: ￥%.2f", book->price);
+                ImGui::PopID();
+            }
+
+            const auto prices = std::accumulate(
+                books.begin(),
+                books.end(),
+                0.0f,
+                [](const float acc, const std::shared_ptr<book>& book) { return acc + book->price; });
+            ImGui::TextColored(red_color, "总价格: ￥%.2f", prices);
+
             ImGui::PushFont(large_font);
             ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 80, 20));
             if (order1->pay)
@@ -99,13 +116,13 @@ void user::show_orders_popup()
             else
                 ImGui::TextColored(red_color, "未支付");
             ImGui::PopFont();
-            ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 160, 90));
 
             if (order1->valid)
             {
+                ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 160, 140));
                 if (ImGui::Button("取消订单"))
                 {
-                    main_user_interface::instance().books.push_back(std::make_shared<book>(*order1->book1));
+                    std::ranges::copy(books, std::back_inserter(main_user_interface::instance().books));
                     order1->valid = false;
                     main_user_interface::instance().save_books_to_file();
                     main_user_interface::instance().save_users_to_file();
@@ -113,9 +130,9 @@ void user::show_orders_popup()
                 ImGui::SameLine();
                 if (ImGui::Button("支付"))
                 {
-                    if (balance >= order1->book1->price)
+                    if (balance >= prices)
                     {
-                        balance -= order1->book1->price;
+                        balance -= prices;
                         order1->pay = true;
                         order1->valid = false;
                         main_user_interface::instance().save_books_to_file();

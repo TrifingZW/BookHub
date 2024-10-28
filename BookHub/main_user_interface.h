@@ -22,6 +22,7 @@ public:
     // 示例的书籍列表
     std::vector<std::shared_ptr<book>> books;
     std::vector<std::shared_ptr<user>> users;
+    std::vector<std::shared_ptr<book>> shopping_cart;
     std::shared_ptr<user> current_user;
     bool login;
 
@@ -40,6 +41,7 @@ public:
     void show_recharge_popup() const;
     void show_logo_popup();
     void show_order_popup(int index);
+    void show_shopping_cart_popup();
     ImGuiID dock_space_id;
 
     std::string books_filename = "books.json";

@@ -119,8 +119,10 @@ void main_user_interface::show_book_window()
     // 滚动区域用于显示书本列表
     ImGui::BeginChild("BookList", ImVec2(0, 0), true);
 
-    int index = -1;
-    static int selected = -1;
+    int index1 = -1;
+    int index2 = -1;
+    static int selected1 = -1;
+    static int selected2 = -1;
     for (int i = 0; i < static_cast<int>(books.size()); ++i)
     {
         const auto book = books[i];
@@ -136,21 +138,27 @@ void main_user_interface::show_book_window()
         // 购买按钮，放置在右侧
         ImGui::SetCursorPosX(ImGui::GetContentRegionAvail().x - 150);
         if (ImGui::Button("购物车"))
-        {
-        }
+            index2 = i;
         ImGui::SameLine();
         if (ImGui::Button("购买"))
-            index = i;
+            index1 = i;
         ImGui::PopID();
         ImGui::PopStyleVar();
         ImGui::EndGroup();
     }
-    if (index != -1)
+    if (index1 != -1)
     {
         ImGui::OpenPopup("OrderModalPopup");
-        selected = index;
+        selected1 = index1;
     }
-    show_order_popup(selected);
+    show_order_popup(selected1);
+
+    if (index2 != -1)
+    {
+        selected2 = index2;
+        shopping_cart.push_back(std::move(books[selected2]));
+        books.erase(books.begin() + selected2);
+    }
     ImGui::EndChild();
     ImGui::End();
 }
@@ -168,6 +176,10 @@ void main_user_interface::show_tool_window()
     if (ImGui::Button("余额充值", ImVec2(window_width, 0)))
         ImGui::OpenPopup("RechargeModalPopup");
     show_recharge_popup();
+
+    if (ImGui::Button("购物车", ImVec2(window_width, 0)))
+        ImGui::OpenPopup("ShoppingCartModalPopup");
+    show_shopping_cart_popup();
 
     ImGui::End();
 }
@@ -359,10 +371,61 @@ void main_user_interface::show_order_popup(const int index)
         if (ImGui::Button("下单", ImVec2(80, 0)))
         {
             order order1;
-            order1.book1 = std::move(books[index]);
+            order1.books.push_back(std::move(books[index]));
             books.erase(books.begin() + index);
             order1.date = get_current_time_string();
             current_user->orders.push_back(std::make_shared<order>(order1));
+            save_books_to_file();
+            save_users_to_file();
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+}
+
+void main_user_interface::show_shopping_cart_popup()
+{
+    if (ImGui::BeginPopupModal("ShoppingCartModalPopup", nullptr, ImGuiWindowFlags_AlwaysAutoResize))
+    {
+        ImGui::BeginChild("OrderList", ImVec2(600, 500), false);
+
+        int index = -1;
+        for (int i = 0; i < static_cast<int>(shopping_cart.size()); i++)
+        {
+            const auto& book = shopping_cart[i];
+            ImGui::PushID(i);
+            ImGui::BeginChild("Order", ImVec2(0, 150), true);
+            ImGui::Text("书名: %s", book->name.c_str());
+            ImGui::Text("作者: %s", book->author.c_str());
+            ImGui::TextColored(red_color, "价格: ￥%.2f", book->price);
+            ImGui::SetCursorPos(ImVec2(ImGui::GetContentRegionAvail().x - 50, 100));
+            if (ImGui::Button("删除"))
+                index = i;
+            ImGui::EndChild();
+            ImGui::PopID();
+        }
+
+        if (index != -1)
+        {
+            books.push_back(std::move(shopping_cart[index]));
+            shopping_cart.erase(shopping_cart.begin() + index);
+        }
+
+        ImGui::EndChild();
+
+        const auto region = ImGui::GetContentRegionAvail();
+
+        if (ImGui::Button("关闭", ImVec2(region.x, 0)))
+            ImGui::CloseCurrentPopup();
+
+        if (ImGui::Button("下单", ImVec2(region.x, 0)))
+        {
+            order order1;
+            order1.books = shopping_cart;
+            order1.date = get_current_time_string();
+            current_user->orders.push_back(std::make_shared<order>(order1));
+            shopping_cart.clear();
             save_books_to_file();
             save_users_to_file();
             ImGui::CloseCurrentPopup();

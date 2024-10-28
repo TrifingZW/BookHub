@@ -10,11 +10,11 @@
 class order
 {
 public:
-    std::shared_ptr<book> book1;
+    std::vector<std::shared_ptr<book>> books;
     bool valid = true;
     bool pay;
     std::string date;
 
     [[nodiscard]] nlohmann::json to_json() const;
-    static order from_json(const nlohmann::json& j);
+    static order from_json(const nlohmann::json& j_object);
 };
