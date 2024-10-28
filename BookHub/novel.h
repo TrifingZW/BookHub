@@ -45,17 +45,11 @@ public:
         return json;
     }
 
-    static novel from_json(const nlohmann::json& j)
+    void from_json(const nlohmann::json& j) override
     {
-        return novel{
-            j.at("name").get<std::string>(),
-            j.at("description").get<std::string>(),
-            j.at("isbn").get<std::string>(),
-            j.at("author").get<std::string>(),
-            j.at("price").get<float>(),
-            j.at("publishing_house").get<std::string>(),
-            j.at("publication_date").get<std::string>()
-        };
+        book::from_json(j);
+        publishing_house = j.at("publishing_house").get<std::string>();
+        publication_date = j.at("publication_date").get<std::string>();
     }
 
     void ex_display_info() const override;

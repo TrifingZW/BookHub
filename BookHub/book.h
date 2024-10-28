@@ -5,7 +5,6 @@
 // Dependencies:
 
 #pragma once
-#include <iostream>
 #include <string>
 
 #include "imgui.h"
@@ -67,16 +66,13 @@ public:
         };
     }
 
-    // 从 JSON 对象反序列化
-    static book from_json(const nlohmann::json& j)
+    virtual void from_json(const nlohmann::json& j)
     {
-        return book{
-            j.at("name").get<std::string>(),
-            j.at("description").get<std::string>(),
-            j.at("isbn").get<std::string>(),
-            j.at("author").get<std::string>(),
-            j.at("price").get<float>()
-        };
+        name = j.at("name").get<std::string>();
+        description = j.at("description").get<std::string>();
+        isbn = j.at("isbn").get<std::string>();
+        author = j.at("author").get<std::string>();
+        price = j.at("price").get<float>();
     }
 
     static nlohmann::json books_to_json(const std::vector<book>& books)

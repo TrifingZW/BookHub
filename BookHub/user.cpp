@@ -6,6 +6,8 @@
 
 #include "user.h"
 
+#include <iostream>
+
 #include "main_user_interface.h"
 
 void user::show_user_info()

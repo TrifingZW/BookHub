@@ -50,18 +50,12 @@ public:
         return json;
     }
 
-    static text_book from_json(const nlohmann::json& j)
+    void from_json(const nlohmann::json& j) override
     {
-        return text_book{
-            j.at("name").get<std::string>(),
-            j.at("description").get<std::string>(),
-            j.at("isbn").get<std::string>(),
-            j.at("author").get<std::string>(),
-            j.at("price").get<float>(),
-            j.at("course").get<std::string>(),
-            j.at("grade").get<int>(),
-            j.at("semester").get<int>()
-        };
+        book::from_json(j);
+        course = j.at("course").get<std::string>();
+        grade = j.at("grade").get<int>();
+        semester = j.at("semester").get<int>();
     }
 
     void ex_display_info() const override;

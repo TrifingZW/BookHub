@@ -36,17 +36,29 @@ order order::from_json(const nlohmann::json& j_object)
     // 加载 books 数组
     if (j_object.contains("books") && j_object["books"].is_array())
         for (const auto& item : j_object["books"])
-            order1.books.push_back(std::make_shared<book>(book::from_json(item)));
+        {
+            book book1;
+            book1.from_json(item);
+            order1.books.push_back(std::make_shared<book>(book1));
+        }
 
     // 加载 text_books 数组
     if (j_object.contains("text_books") && j_object["text_books"].is_array())
         for (const auto& item : j_object["text_books"])
-            order1.books.push_back(std::make_shared<text_book>(text_book::from_json(item)));
+        {
+            text_book text_book1;
+            text_book1.from_json(item);
+            order1.books.push_back(std::make_shared<text_book>(text_book1));
+        }
 
     // 加载 novels 数组
     if (j_object.contains("novels") && j_object["novels"].is_array())
         for (const auto& item : j_object["novels"])
-            order1.books.push_back(std::make_shared<novel>(novel::from_json(item)));
+        {
+            novel novel1;
+            novel1.from_json(item);
+            order1.books.push_back(std::make_shared<novel>(novel1));
+        }
 
     order1.valid = j_object.at("valid").get<bool>();
     order1.pay = j_object.at("pay").get<bool>();
