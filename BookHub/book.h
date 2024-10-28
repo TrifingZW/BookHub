@@ -75,14 +75,6 @@ public:
         price = j.at("price").get<float>();
     }
 
-    static nlohmann::json books_to_json(const std::vector<book>& books)
-    {
-        nlohmann::json j_array = nlohmann::json::array();
-        for (const auto& book : books)
-            j_array.push_back(book.to_json());
-        return j_array;
-    }
-
     // 用于临时存储输入的缓冲区
     struct book_input_buffer
     {
