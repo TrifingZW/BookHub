@@ -41,22 +41,9 @@ public:
     {
     }
 
-    [[nodiscard]] nlohmann::json to_json() const override
-    {
-        nlohmann::json json = book::to_json();
-        json.push_back({"course", course});
-        json.push_back({"grade", grade});
-        json.push_back({"semester", semester});
-        return json;
-    }
+    [[nodiscard]] nlohmann::json to_json() const override;
 
-    void from_json(const nlohmann::json& j) override
-    {
-        book::from_json(j);
-        course = j.at("course").get<std::string>();
-        grade = j.at("grade").get<int>();
-        semester = j.at("semester").get<int>();
-    }
+    void from_json(const nlohmann::json& j) override;
 
     void ex_display_info() const override;
 };

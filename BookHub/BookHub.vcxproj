@@ -105,6 +105,7 @@
     </ItemDefinitionGroup>
 
     <ItemGroup>
+        <ClCompile Include="book.cpp" />
         <ClCompile Include="main.cpp"/>
         <ClCompile Include="main_user_interface.cpp"/>
         <ClCompile Include="novel.cpp" />

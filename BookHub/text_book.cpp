@@ -1,5 +1,22 @@
 ﻿#include "text_book.h"
 
+nlohmann::json text_book::to_json() const
+{
+    nlohmann::json json = book::to_json();
+    json.push_back({"course", course});
+    json.push_back({"grade", grade});
+    json.push_back({"semester", semester});
+    return json;
+}
+
+void text_book::from_json(const nlohmann::json& j)
+{
+    book::from_json(j);
+    course = j.at("course").get<std::string>();
+    grade = j.at("grade").get<int>();
+    semester = j.at("semester").get<int>();
+}
+
 void text_book::ex_display_info() const
 {
     ImGui::PushStyleColor(ImGuiCol_ChildBg, ImVec4(1.0f, 1.0f, 1.0f, 1.0f)); // 灰色背景

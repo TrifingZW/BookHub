@@ -55,25 +55,9 @@ public:
     {
     }
 
-    [[nodiscard]] virtual nlohmann::json to_json() const
-    {
-        return nlohmann::json{
-            {"name", name},
-            {"description", description},
-            {"isbn", isbn},
-            {"author", author},
-            {"price", price}
-        };
-    }
+    [[nodiscard]] virtual nlohmann::json to_json() const;
 
-    virtual void from_json(const nlohmann::json& j)
-    {
-        name = j.at("name").get<std::string>();
-        description = j.at("description").get<std::string>();
-        isbn = j.at("isbn").get<std::string>();
-        author = j.at("author").get<std::string>();
-        price = j.at("price").get<float>();
-    }
+    virtual void from_json(const nlohmann::json& j);
 
     // 用于临时存储输入的缓冲区
     struct book_input_buffer
@@ -90,20 +74,7 @@ public:
         float price = 0.0f;
     };
 
-    void display_info() const
-    {
-        // 卡片内容
-        ImGui::PushFont(large_font);
-        ImGui::SeparatorText(name.c_str());
-        ImGui::PopFont();
-        ex_display_info();
-        ImGui::Text("作者: %s", author.c_str());
-        ImGui::Text("ISBN: %s", isbn.c_str());
-        ImGui::TextColored(red_color, "价格: ￥%.2f", price);
-        ImGui::Spacing();
-        ImGui::TextWrapped("Description: %s", description.c_str());
-        ImGui::Spacing();
-    }
+    void display_info() const;
 
     virtual void ex_display_info() const
     {

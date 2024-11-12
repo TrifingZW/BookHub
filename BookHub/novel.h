@@ -7,7 +7,7 @@
 #pragma once
 #include "book.h"
 
-class novel : public book
+class novel final : public book
 {
 public:
     std::string publishing_house;
@@ -37,20 +37,9 @@ public:
     {
     }
 
-    [[nodiscard]] nlohmann::json to_json() const override
-    {
-        nlohmann::json json = book::to_json();
-        json.push_back({"publishing_house", publishing_house});
-        json.push_back({"publication_date", publication_date});
-        return json;
-    }
+    [[nodiscard]] nlohmann::json to_json() const override;
 
-    void from_json(const nlohmann::json& j) override
-    {
-        book::from_json(j);
-        publishing_house = j.at("publishing_house").get<std::string>();
-        publication_date = j.at("publication_date").get<std::string>();
-    }
+    void from_json(const nlohmann::json& j) override;
 
     void ex_display_info() const override;
 };
