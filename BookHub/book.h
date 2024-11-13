@@ -10,6 +10,7 @@
 #include "imgui.h"
 #include "json.hpp"
 
+// 颜色常量
 constexpr auto red_color = ImVec4(1.0f, 0.0f, 0.0f, 1.0f);
 constexpr auto green_color = ImVec4(0.0f, 1.0f, 0.0f, 1.0f);
 constexpr auto blue_color = ImVec4(0.0f, 0.0f, 1.0f, 1.0f);
@@ -55,8 +56,10 @@ public:
     {
     }
 
+    // 转化为json对象
     [[nodiscard]] virtual nlohmann::json to_json() const;
 
+    // 从json对象读取
     virtual void from_json(const nlohmann::json& j);
 
     // 用于临时存储输入的缓冲区
@@ -74,8 +77,10 @@ public:
         float price = 0.0f;
     };
 
+    // 显示信息
     void display_info() const;
 
+    // 显示额外信息
     virtual void ex_display_info() const
     {
     }

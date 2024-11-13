@@ -19,7 +19,10 @@ public:
     float balance;
     std::vector<std::shared_ptr<order>> orders;
 
+    // 显示用户信息
     void show_user_info();
+
+    // 显示订单弹窗
     void show_orders_popup();
 
     [[nodiscard]] nlohmann::json to_json() const;

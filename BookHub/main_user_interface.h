@@ -33,6 +33,7 @@ public:
         return user_interface;
     }
 
+    // UI相关函数
     void render_ui();
     void show_book_window();
     void show_tool_window();
@@ -44,10 +45,12 @@ public:
     void show_shopping_cart_popup();
     ImGuiID dock_space_id;
 
+    // 读取json
     std::string books_filename = "books.json";
     void load_books_from_file();
     void save_books_to_file() const;
 
+    // 保存json
     std::string users_filename = "users.json";
     void load_users_from_file();
     void save_users_to_file() const;

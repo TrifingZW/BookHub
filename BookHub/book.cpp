@@ -28,7 +28,6 @@ void book::from_json(const nlohmann::json& j)
 
 void book::display_info() const
 {
-    // 卡片内容
     ImGui::PushFont(large_font);
     ImGui::SeparatorText(name.c_str());
     ImGui::PopFont();

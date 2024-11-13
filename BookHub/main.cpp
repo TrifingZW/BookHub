@@ -73,10 +73,8 @@ int main(int, char**)
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable; // 启动停靠功能
 
     // 设置 Dear ImGui 样式
-    // ImGui::StyleColorsDark();
     ImGui::StyleColorsLight();
 
-    // 设置 Platform/Renderer 后端
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(glsl_version);
 
@@ -103,7 +101,11 @@ int main(int, char**)
     // 主循环
     while (!glfwWindowShouldClose(window))
     {
+
+        // 处理所有待处理的窗口事件
         glfwPollEvents();
+
+        // 如果窗口最小化,暂停程序一段时间，避免过多的无用计算
         if (glfwGetWindowAttrib(window, GLFW_ICONIFIED) != 0)
         {
             ImGui_ImplGlfw_Sleep(10);

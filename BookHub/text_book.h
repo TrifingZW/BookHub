@@ -7,7 +7,7 @@
 #pragma once
 #include "book.h"
 
-class text_book : public book
+class text_book final : public book
 {
 public:
     std::string course;
